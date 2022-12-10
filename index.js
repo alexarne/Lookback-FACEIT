@@ -1,6 +1,7 @@
 const node_fetch = (...args) =>
     import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
+const { response } = require("express");
 const express = require("express")
 require("dotenv").config()
 const PORT = process.env.PORT
@@ -25,7 +26,7 @@ app.post("/mutualGames", async (req, res) => {
     if (typeof user1 !== "string" || typeof user2 !== "string" 
         || typeof count !== "number" || typeof game !== "string"
         || count % 100 != 0 || count <= 0) {
-        error(res, "incorrect body")
+        error(res, "Incorrect body")
         return
     }
 
@@ -34,13 +35,22 @@ app.post("/mutualGames", async (req, res) => {
         fetch(`https://open.faceit.com/data/v4/search/players?nickname=${user1}&offset=0&limit=1`),
         fetch(`https://open.faceit.com/data/v4/search/players?nickname=${user2}&offset=0&limit=1`)
     ])
-    let data = await Promise.all(responses.map(r => r.json()))
-    if (data[0].items.length == 0) {
-        error(res, user1 + " doesn't exist")
+    if (responses[0].status !== 200 || responses[1].status !== 200) {
+        if (responses[1].status === 429) {
+            error(res, "Too many requests, retry after " + responses[1].headers.get("retry-after") + " seconds")
+            return
+        }
+        console.log("Unknown Error " + responses[0].status, responses[0])
+        error(res, "Fetch userIDs, codes " + responses[0].status + ", " + responses[1].status)
         return
     }
-    if (data[1].items.length == 0) {
-        error(res, user2 + " doesn't exist")
+    let data = await Promise.all(responses.map(r => r.json()))
+    if (responses[0].status !== 200 || data[0].items.length == 0 || !equalStrings(data[0].items[0].nickname, user1)) {
+        error(res, "User '" + user1 + "' doesn't exist")
+        return
+    }
+    if (responses[1].status !== 200 || data[1].items.length == 0 || !equalStrings(data[1].items[0].nickname, user2)) {
+        error(res, "User '" + user2 + "' doesn't exist")
         return
     }
     const user1_id = data[0].items[0].player_id
@@ -53,13 +63,19 @@ app.post("/mutualGames", async (req, res) => {
         queries[count/100 + i] = fetch(`https://open.faceit.com/data/v4/players/${user2_id}/history?game=${game}&offset=${i*100}&limit=100`)
     }
     responses = await Promise.all(queries)
-    data = await Promise.all(responses.map(r => r.json()))
+    data = await Promise.all(responses.map(function(r) {
+        if (r.status === 200) {
+            return r.json()
+        } else {
+            return undefined
+        }
+    }))
 
     let user1_matches = []
     let user2_matches = []
     for (let i = 0; i*100 < count; i++) {
-        user1_matches = user1_matches.concat(data[i].items)
-        user2_matches = user2_matches.concat(data[count/100 + i].items)
+        if (responses[i].status === 200) user1_matches = user1_matches.concat(data[i].items)
+        if (responses[count/100 + i].status === 200) user2_matches = user2_matches.concat(data[count/100 + i].items)
     }
 
     const mutual_matches = []
@@ -86,6 +102,9 @@ function error(res, message) {
     res.json("Error: " + message)
 }
 
+function equalStrings(string1, string2) {
+    return string1.toLowerCase() === string2.toLowerCase()
+}
 
 async function fetch(req) {
     return node_fetch(req, {
