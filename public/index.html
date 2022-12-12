@@ -29,7 +29,23 @@
         <button id="input-submit" onclick="displayMutualGames()">Lookback</button>
         <div id="input-status"></div>
     </div>
-    <div id="games">
+
+    <div id="players" hidden>
+        <div id="player1">
+            <img src="" id="player1-img">
+            <div id="player1-name"></div>
+        </div>
+        <div id="player2">
+            <img src="" id="player2-img">
+            <div id="player2-name"></div>
+        </div>
+        <div id="players-playedTogether">
+            Found <span id="players-playedTogether-count"></span> <span id="players-playedTogether-suffix"></span>
+        </div>
+    </div>
+
+    <div id="games" hidden>
+        <div id="games-list"></div>
         <button id="games-moreButton" onclick="displayMoreGames()">More</button>
     </div>
 </body>
