@@ -19,18 +19,24 @@ app.use(express.static("public"))
 
 app.post("/mutualGames", async (req, res) => {
     console.log("Incoming request /mutualGames:", req.body)
-    const user1 = req.body.user1
-    const user2 = req.body.user2
+    const user1 = req.body.user1.trim()
+    const user2 = req.body.user2.trim()
     const count = req.body.count
     const game = req.body.game
+    const offset = req.body.offset
     if (typeof user1 !== "string" || typeof user2 !== "string" 
         || typeof count !== "number" || typeof game !== "string"
-        || count % 100 != 0 || count <= 0) {
+        || count % 100 != 0 || count <= 0
+        || offset < 0 || (offset != 0 && offset % count != 0)) {
         error(res, "Incorrect body")
         return
     }
     if (equalStrings(user1, user2)) {
         error(res, "Names can't be same")
+        return
+    }
+    if (user1 === "" || user2 === "") {
+        error(res, "Names can't be empty")
         return
     }
 
@@ -62,46 +68,50 @@ app.post("/mutualGames", async (req, res) => {
     // First name in list is a soft match (without capitalization), seek true match
     const user1_id = findUserID(user1, data[0].items)
     const user2_id = findUserID(user2, data[1].items)
+    const user1_profile = data[0].items[0]
+    const user2_profile = data[1].items[0]
 
     // Get recent {count} matches for each user
     const queries = []
     for (let i = 0; i*100 < count; i++) {
-        queries[i] = fetch(`https://open.faceit.com/data/v4/players/${user1_id}/history?game=${game}&offset=${i*100}&limit=100`)
+        queries[i] = fetch(`https://open.faceit.com/data/v4/players/${user1_id}/history?game=${game}&offset=${i*100+offset}&limit=100`)
     }
     responses = await Promise.all(queries)
     data = await Promise.all(responses.map(function(r) {
         if (r.status === 200) {
             return r.json()
         } else {
-            return undefined
+            return { items: [] }
         }
     }))
 
     const mutual_matches = []
+    let checked_all = false
+    let last_game
     for (let i = 0; i*100 < count; i++) {
         if (responses[i].status === 200) {
-            data[i].forEach(match => {
+            // Add mutual games
+            data[i].items.forEach(match => {
                 if (match.playing_players.includes(user2_id)) {
                     mutual_matches.push(match)
                 }
+                last_game = match.started_at
             })
+            // If not full of games, we've reached the end
+            if (data[i].items.length < 100) {
+                checked_all = true
+                break
+            }
         }
     }
-
-    // let user1_matches = []
-    // for (let i = 0; i*100 < count; i++) {
-    //     if (responses[i].status === 200) user1_matches = user1_matches.concat(data[i].items)
-    // }
-
-    // const mutual_matches = []
-    // user1_matches.forEach(match => {
-    //     if (match.playing_players.includes(user2_id)) {
-    //         mutual_matches.push(match)
-    //     }
-    // })
-
-    console.log(mutual_matches.length)
-    res.json(mutual_matches)
+    
+    res.json({
+        user1: user1_profile,
+        user2: user2_profile,
+        mutual_games: mutual_matches,
+        last_game: offset + count,
+        checked_all: checked_all,
+    })
 })
 
 // Problem: Players with same username but different capitalization can exist
