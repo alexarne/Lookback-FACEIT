@@ -18,9 +18,8 @@ app.use(express.static("public"))
 
 /**
  * Request body: {
- *      updating: False if first request, True if updating request,
- *      user1: Nickname if not updating, player profile object if updating,
- *      user2: Nickname if not updating, player profile object if updating,
+ *      user1: Nickname of user1,
+ *      user2: Nickname of user2,
  *      count: Amount of games to check, starting from offset, is multiple of 100,
  *      game: Game ID, i.e. "lol_EUW", "csgo", "lol_EUN", etc.
  *      offset: How many games to skip
@@ -43,7 +42,8 @@ app.post("/mutualGames", async (req, res) => {
     const [user1_profile, user2_profile, code] = await getUserProfiles(res, user1, user2)
     if (code !== 200) return
 
-    const [user1_id, user2_id] = [user1_profile, user2_profile]
+    const [user1_id, user2_id] = [user1_profile.player_id, user2_profile.player_id]
+    console.log(user1_id, user2_id)
 
     // Get recent {count} matches for each user
     const queries = []

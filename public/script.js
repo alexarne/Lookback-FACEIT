@@ -51,7 +51,7 @@ async function displayMutualGames() {
     }
     console.log(response)
     button.disabled = false
-    current_request.offset = response.last_game
+    current_request.offset = response.checked_games
 }
 
 function setAvatar(element, img) {
@@ -74,7 +74,7 @@ async function displayMoreGames() {
     const [status_code, response] = await getMutualGames(current_request)
 
     if (status_code === 200) {
-        current_request.offset = response.last_game
+        current_request.offset = response.checked_games
         let count = response.mutual_games.length + Number(document.getElementById("players-playedTogether-count").innerHTML)
         document.getElementById("players-playedTogether-count").innerHTML = count
         document.getElementById("players-playedTogether-suffix").innerHTML = "game" + (count == 1 ? "" : "s")

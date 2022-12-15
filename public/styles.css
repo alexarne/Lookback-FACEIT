@@ -1,5 +1,47 @@
 
 
+#input {
+    border: 2px solid black;
+    margin: 35vh auto 0 auto;
+    width: fit-content;
+    transform: translateY(-50%);
+    padding: 30px;
+}
+
+input:focus::placeholder {
+    color: transparent;
+}
+
+#input-users {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+@media (max-width: 600px) {
+    #input-users {
+        flex-direction: column;
+    }
+}
+
+.user-block {
+    margin: 30px;
+    display: block;
+    width: fit-content;
+    text-align: center;
+    border: 2px solid red;
+}
+
+.user-input {
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+input[type="text"] {
+    width: 12em;
+    text-align: center;
+}
+
 img {
     pointer-events: none;
 }

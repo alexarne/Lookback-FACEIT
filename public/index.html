@@ -11,13 +11,15 @@
 <body>
     <script defer src="script.js"></script>
     <div id="input">
-        <div id="input-user1">
-            <label for="input-user1-text">User 1</label>
-            <input type="text" placeholder="s1mple" id="input-user1-text" name="input-user1-text" data-submit-target="#input-submit">
-        </div>
-        <div id="input-user2">
-            <label for="input-user2-text">User 2</label>
-            <input type="text" placeholder="TaRiK" id="input-user2-text" name="input-user2-text" data-submit-target="#input-submit">
+        <div id="input-users">
+            <div id="input-user1" class="user-block">
+                <label for="input-user1-text">User 1</label><br>
+                <input type="text" placeholder="s1mple" id="input-user1-text" class="user-input" name="input-user1-text" data-submit-target="#input-submit">
+            </div>
+            <div id="input-user2" class="user-block">
+                <label for="input-user2-text">User 2</label><br>
+                <input type="text" placeholder="TaRiK" id="input-user2-text" class="user-input" name="input-user2-text" data-submit-target="#input-submit">
+            </div>
         </div>
         <div id="input-game">
             <label for="input-game-dropdown">Game</label>
