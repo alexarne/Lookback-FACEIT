@@ -10,6 +10,16 @@ document.querySelectorAll("[data-submit-target]").forEach(field => {
     })
 })
 
+// Sanitize user input on blur
+document.querySelectorAll(".user-input").forEach(elem => {
+    elem.addEventListener("blur", (e) => {
+        elem.value = elem.value.trim()
+    })
+    elem.addEventListener("focus", (e) => {
+        
+    })
+})
+
 const GAMES_PER_REQUEST = 200
 let current_request
 let game_counter = 0
@@ -17,6 +27,9 @@ let game_counter = 0
 async function displayMutualGames() {
     const field1 = document.getElementById("input-user1-text")
     const field2 = document.getElementById("input-user2-text")
+    if (field1.value === "") field1.value = field1.placeholder
+    if (field2.value === "") field2.value = field2.placeholder
+
     const game = document.getElementById("input-game-dropdown")
     const button = document.getElementById("input-submit")
     const status = document.getElementById("input-status")

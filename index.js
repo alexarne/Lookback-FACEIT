@@ -41,9 +41,7 @@ app.post("/mutualGames", async (req, res) => {
 
     const [user1_profile, user2_profile, code] = await getUserProfiles(res, user1, user2)
     if (code !== 200) return
-
     const [user1_id, user2_id] = [user1_profile.player_id, user2_profile.player_id]
-    console.log(user1_id, user2_id)
 
     // Get recent {count} matches for each user
     const queries = []

@@ -11,6 +11,10 @@
 <body>
     <script defer src="script.js"></script>
     <div id="input">
+        <div id="header">
+            <span id="header-text">Lookback</span>
+            <img id="header-logo" src="faceit-favicon.svg" alt="FACEIT">
+        </div>
         <div id="input-users">
             <div id="input-user1" class="user-block">
                 <label for="input-user1-text">User 1</label><br>
@@ -22,17 +26,18 @@
             </div>
         </div>
         <div id="input-game">
-            <label for="input-game-dropdown">Game</label>
+            <label for="input-game-dropdown">Game</label><br>
             <select id="input-game-dropdown">
-                <option value="lol_EUW">LOL EUW</option>
                 <option value="csgo">CSGO</option>
+                <option value="lol_EUW">LOL EUW</option>
+                <option value="lol_EUN">LOL EUN</option>
             </select>
         </div>
-        <button id="input-submit" onclick="displayMutualGames()">Lookback</button>
-        <div id="input-status"></div>
+        <button id="input-submit" onclick="displayMutualGames()">Search</button>
     </div>
 
     <div id="players" hidden>
+        <div id="input-status"></div>
         <div id="player1">
             <img src="" id="player1-img">
             <div id="player1-name"></div>
@@ -49,6 +54,7 @@
     <div id="games" hidden>
         <div id="games-list"></div>
         <button id="games-moreButton" onclick="displayMoreGames()">More</button>
+        loler
     </div>
 </body>
 </html>
