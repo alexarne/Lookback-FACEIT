@@ -1,8 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Play');
 
-body {
+:root {
+    --color-background: #141616;
+    --color-background-secondary: #0A0C0C;
     /* background-color: #1f1f1f; */
     /* background-color: #161616; */
-    background-color: #141616;
+    --color-foreground: white;
+    --color-accent: #FF5500;
+    --color-text: #141616;
+}
+
+* {
+    font-family: "Play";
+}
+
+body {
+    background-color: var(--color-background);
 }
 
 
@@ -12,9 +25,9 @@ img {
 
 #input {
     /* border: 1px solid white; */
-    box-shadow: 0 0 50px #0A0C0C;
-    border-radius: 10px;
-    background-color: #232828;
+    box-shadow: 0 0 50px var(--color-background-secondary);
+    /* border-radius: 10px; */
+    background-color: var(--color-foreground);
     margin: 35vh auto 0 auto;
     width: fit-content;
     transform: translateY(-50%);
@@ -33,7 +46,7 @@ img {
 }
 
 #header-text {
-    color: #EBEFF3;
+    color: var(--color-text);
     font-size: 1em;
 }
 
@@ -41,6 +54,7 @@ img {
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
+    margin-top: 15px;
 }
 
 @media (max-width: 600px) {
@@ -61,13 +75,14 @@ input[type="text"] {
 .user-block {
     margin: 30px;
     margin-bottom: 0;
+    margin-top: 15px;
     width: fit-content;
     text-align: center;
     /* border: 2px solid red; */
 }
 
 .user-block > label {
-    color: white;
+    color: var(--color-text);
 }
 
 .user-input {
