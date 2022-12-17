@@ -30,14 +30,14 @@ app.post("/mutualGames", async (req, res) => {
     const count = req.body.count
     const game = req.body.game
     const offset = req.body.offset
-    const user1 = req.body.user1.trim()
-    const user2 = req.body.user2.trim()
 
-    const [status, msg] = validInput(user1, user2, count, game, offset)
+    const [status, msg] = validInput(req.body.user1, req.body.user2, count, game, offset)
     if (status !== 200) {
         error(res, msg)
         return
     }
+    const user1 = req.body.user1.trim()
+    const user2 = req.body.user2.trim()
 
     const [user1_profile, user2_profile, code] = await getUserProfiles(res, user1, user2)
     if (code !== 200) return
@@ -118,10 +118,12 @@ async function getUserProfiles(res, user1, user2) {
     }
     const data = await Promise.all(responses.map(r => r.json()))
     if (responses[0].status !== 200 || data[0].items.length == 0 || !equalStrings(data[0].items[0].nickname, user1)) {
+        console.log("Error response:", responses[0])
         error(res, "Cannot find user '" + user1 + "'")
         return [null, null, 400]
     }
     if (responses[1].status !== 200 || data[1].items.length == 0 || !equalStrings(data[1].items[0].nickname, user2)) {
+        console.log("Error response:", responses[1])
         error(res, "Cannot find user '" + user2 + "'")
         return [null, null, 400]
     }

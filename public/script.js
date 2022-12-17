@@ -24,7 +24,11 @@ const GAMES_PER_REQUEST = 200
 let current_request
 let game_counter = 0
 
+// Called when searching new players
 async function displayMutualGames() {
+    document.getElementById("player1").classList.remove("show")
+    document.getElementById("player2").classList.remove("show")
+
     const field1 = document.getElementById("input-user1-text")
     const field2 = document.getElementById("input-user2-text")
     if (field1.value === "") field1.value = field1.placeholder
@@ -49,9 +53,17 @@ async function displayMutualGames() {
 
     if (status_code === 200) {
         status.innerHTML = ""
-        document.getElementById("players").hidden = false
         setAvatar(document.getElementById("player1-img"), response.user1.avatar)
         setAvatar(document.getElementById("player2-img"), response.user2.avatar)
+        
+        document.getElementById("player1-url").href = "https://www.faceit.com/en/players/" + response.user1.nickname
+        document.getElementById("player2-url").href = "https://www.faceit.com/en/players/" + response.user2.nickname
+        document.getElementById("player1-name").innerHTML = response.user1.nickname
+        document.getElementById("player2-name").innerHTML = response.user2.nickname
+
+        document.getElementById("player1").classList.add("show")
+        document.getElementById("player2").classList.add("show")
+
         const count = response.mutual_games.length
         document.getElementById("players-playedTogether-count").innerHTML = count
         document.getElementById("players-playedTogether-suffix").innerHTML = "game" + (count == 1 ? "" : "s")
@@ -60,7 +72,6 @@ async function displayMutualGames() {
         response.mutual_games.forEach(game => addGame(game))
     } else {
         status.innerHTML = response
-        document.getElementById("players").hidden = true
     }
     console.log(response)
     button.disabled = false
@@ -80,6 +91,7 @@ function addGame(game) {
     console.log(game)
 }
 
+// Called when fetching more games from previously searched players
 async function displayMoreGames() {
     const button = document.getElementById("games-moreButton")
     button.disabled = true
