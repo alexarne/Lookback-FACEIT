@@ -12,10 +12,13 @@
 
 * {
     font-family: "Play";
+    box-sizing: border-box;
 }
 
 body {
     background-color: var(--color-background);
+    padding: 0;
+    margin: 0;
 }
 
 
@@ -23,21 +26,13 @@ img {
     pointer-events: none;
 }
 
-#input {
-    /* border: 1px solid white; */
-    box-shadow: 0 0 50px var(--color-background-secondary);
-    /* border-radius: 10px; */
-    background-color: var(--color-foreground);
-    margin: 35vh auto 0 auto;
-    width: fit-content;
-    transform: translateY(-50%);
-    padding: 30px;
-}
-
 #header {
     display: flex;
     justify-content: center;
+    padding-bottom: 20px;
     font-size: 32px;
+    border-bottom: 1px solid;
+    border-image: radial-gradient(rgb(150, 150, 150), var(--color-foreground)) 1;
 }
 
 #header-logo {
@@ -50,11 +45,23 @@ img {
     font-size: 1em;
 }
 
+#input {
+    /* border: 1px solid white; */
+    box-shadow: 0 0 50px var(--color-background-secondary);
+    border-radius: 2px;
+    background-color: var(--color-foreground);
+    margin: 80px auto 0 auto;
+
+    width: fit-content;
+    height: fit-content;
+    padding: 30px;
+}
+
 #input-users {
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
-    margin-top: 15px;
+    margin-top: 9px;
 }
 
 @media (max-width: 600px) {
