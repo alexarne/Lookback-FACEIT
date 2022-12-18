@@ -28,6 +28,7 @@ let game_counter = 0
 async function displayMutualGames() {
     document.getElementById("player1").classList.remove("show")
     document.getElementById("player2").classList.remove("show")
+    document.getElementById("players-div").hidden = false
 
     const field1 = document.getElementById("input-user1-text")
     const field2 = document.getElementById("input-user2-text")
@@ -117,9 +118,16 @@ async function displayMoreGames() {
 }
 
 async function getMutualGames(body) {
+    let caught = false
     const response = await fetch(URL + "/mutualGames", 
         requestParams("POST", body)
-    )
+    ).catch(e => {
+        console.log("Failed fetch, error:", e)
+        caught = true
+        return [400, "Error: Failed fetch"]
+    })
+    
+    if (caught) return response
     const data = await response.json()
     return [response.status, data]
 }

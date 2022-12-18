@@ -164,6 +164,10 @@ input[type="text"] {
     pointer-events: none;
 }
 
+.player-url:hover {
+    scale: 1.05;
+}
+
 .player-name {
     color: white;
     font-size: 1.2em;
@@ -186,7 +190,7 @@ input[type="text"] {
 #player1-name-div { transform: translateX(-100px); }
 #player2-name-div { transform: translateX(100px); }
 
-.player-url { transition: transform 2s, opacity 2s; }
+.player-url { transition: transform 2s, opacity 2s, scale 300ms; }
 .player-img { transition: rotate 2s; }
 .player-name span { transition: transform 2s, opacity 2s; }
 .player-name { transition: transform 2s; }
