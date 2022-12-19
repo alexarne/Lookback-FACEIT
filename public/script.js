@@ -20,6 +20,12 @@ document.querySelectorAll(".user-input").forEach(elem => {
     })
 })
 
+const logo = {
+    csgo: "https://assets.faceit-cdn.net/third_party/games/4f899245-2fa8-4e52-ad9a-4a363613c19e/assets/details/csgo_flag_l_1589795099305.jpg",
+    lol_EUW: "https://assets.faceit-cdn.net/third_party/games/2386f8e0-8aed-461f-bfb4-8634b23bfb14/assets/details/lol_EUW_flag_l_1600340149252.jpg",
+    lol_EUN: "https://assets.faceit-cdn.net/third_party/games/91e012e7-a1fe-4385-893c-3747da1fb341/assets/details/lol_EUN_flag_l_1600339899476.jpg",
+}
+
 const GAMES_PER_REQUEST = 200
 let current_request
 let game_counter = 0
@@ -28,7 +34,15 @@ let game_counter = 0
 async function displayMutualGames() {
     document.getElementById("player1").classList.remove("show")
     document.getElementById("player2").classList.remove("show")
+    document.getElementById("games-header").classList.remove("show")
     document.getElementById("players-div").hidden = false
+    document.getElementById("games").hidden = false
+
+    // Remove all games from the list except for the template
+    const list = document.getElementById("games-list")
+    document.querySelectorAll(".game").forEach((node) => {
+        list.removeChild(node)
+    })
 
     const field1 = document.getElementById("input-user1-text")
     const field2 = document.getElementById("input-user2-text")
@@ -64,13 +78,14 @@ async function displayMutualGames() {
 
         document.getElementById("player1").classList.add("show")
         document.getElementById("player2").classList.add("show")
+        document.getElementById("games-header").classList.add("show")
 
         const count = response.mutual_games.length
-        document.getElementById("players-playedTogether-count").innerHTML = count
+        document.getElementById("players-playedTogether-count").innerHTML = " " + count + " "
         document.getElementById("players-playedTogether-suffix").innerHTML = "game" + (count == 1 ? "" : "s")
         document.getElementById("games").hidden = false
         document.getElementById("games-moreButton").disabled = response.checked_all
-        response.mutual_games.forEach(game => addGame(game))
+        addGames(response.mutual_games)
     } else {
         status.innerHTML = response
     }
@@ -87,9 +102,45 @@ function setAvatar(element, img) {
     }
 }
 
-function addGame(game) {
-    const list = document.getElementById("games-list")
+function addGames(games) {
+    if (games.length <= 0) return
+    
+    const game = games.shift()
+    const template = document.querySelector(".template")
+    let clone = template.cloneNode(true)
+    clone.removeAttribute("id")
+    clone.classList.remove("hidden")
+    clone.classList.add("game")
+
+    // <div class="template hidden">
+    //     <div class="game-logo">
+    //         <img src="https://assets.faceit-cdn.net/third_party/games/2386f8e0-8aed-461f-bfb4-8634b23bfb14/assets/details/lol_EUW_flag_l_1600340149252.jpg" alt="">
+    //     </div>
+    //     <div class="game-date">b</div>
+    //     <div class="game-team1">c</div>
+    //     <div class="game-team2">d</div>
+    //     <div class="game-score">
+    //         <span>1</span>-<span>2</span>
+    //     </div>
+    //     <div class="game-legacy">
+    //         <a href="">INFO</a>
+    //     </div>
+    //     <div class="game-link">
+    //         <a href="">LINK</a>
+    //     </div>
+    // </div>
     console.log(game)
+    clone.querySelector(".game-logo img").src = logo[game.game_id]
+    clone.querySelector(".game-date").innerHTML = game.started_at
+    clone.querySelector(".game-team1").innerHTML = game.teams.faction1.nickname
+    clone.querySelector(".game-team2").innerHTML = game.teams.faction2.nickname
+    clone.querySelector(".game-link a").href = game.faceit_url.replace("{lang}", "en")
+
+    template.parentNode.appendChild(clone)
+    setTimeout(() => {
+        clone.classList.add("show")
+        addGames(games)
+    }, 10);
 }
 
 // Called when fetching more games from previously searched players
@@ -102,8 +153,9 @@ async function displayMoreGames() {
     if (status_code === 200) {
         current_request.offset = response.checked_games
         let count = response.mutual_games.length + Number(document.getElementById("players-playedTogether-count").innerHTML)
-        document.getElementById("players-playedTogether-count").innerHTML = count
+        document.getElementById("players-playedTogether-count").innerHTML = " " + count + " "
         document.getElementById("players-playedTogether-suffix").innerHTML = "game" + (count == 1 ? "" : "s")
+        addGames(response.mutual_games)
         if (response.checked_all) {
             button.disabled = true
         } else {

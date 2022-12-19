@@ -38,7 +38,8 @@
 
     <div id="input-status"></div>
 
-    <div id="players-div" hidden>
+    <!-- <div id="players-div" hidden> -->
+    <div id="players-div">
         <div id="players">
             <div id="player1" class="player">
                 <div id="player1-name-div" class="player-name"><span id="player1-name">s1mple</span></div>
@@ -54,15 +55,43 @@
             </div>
         </div>
         <div id="players-playedTogether">
-            Found <span id="players-playedTogether-count"></span> <span id="players-playedTogether-suffix"></span>
+            Found<span id="players-playedTogether-count"></span><span id="players-playedTogether-suffix"></span>
         </div>
     </div>
 
     <br>
-    <div id="games" hidden>
-        <div id="games-list"></div>
-        <button id="games-moreButton" onclick="displayMoreGames()">More</button>
-        loler
+    <!-- <div id="games" hidden> -->
+    <div id="games">
+        <div id="games-header-container">
+            <div id="games-header">
+                <div id="games-header-logo">Game</div>
+                <div id="games-header-date">Date</div>
+                <div id="games-header-team1">Team 1</div>
+                <div id="games-header-team2">Team 2</div>
+                <div id="games-header-legacy">Legacy</div>
+                <div id="games-header-link">Match</div>
+            </div>
+        </div>
+        <div id="games-list">
+            <div class="template hidden">
+                <div class="game-logo">
+                    <img src="https://assets.faceit-cdn.net/third_party/games/2386f8e0-8aed-461f-bfb4-8634b23bfb14/assets/details/lol_EUW_flag_l_1600340149252.jpg" alt="">
+                </div>
+                <div class="game-date">b</div>
+                <div class="game-team1">c</div>
+                <div class="game-team2">d</div>
+                <div class="game-legacy">
+                    <a href="">INFO</a>
+                </div>
+                <div class="game-link">
+                    <a href="" target="_blank">LINK</a>
+                </div>
+            </div>
+        </div>
+        <div id="games-footer">
+            <button id="games-moreButton" onclick="displayMoreGames()">More</button>
+            <!-- loler -->
+        </div>
     </div>
 </body>
 </html>

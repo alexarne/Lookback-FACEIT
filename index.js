@@ -119,11 +119,21 @@ async function getUserProfiles(res, user1, user2) {
     const data = await Promise.all(responses.map(r => r.json()))
     if (responses[0].status !== 200 || data[0].items.length == 0 || !equalStrings(data[0].items[0].nickname, user1)) {
         console.log("Error response:", responses[0])
+        console.log("If conditions: ")
+        console.log("Status:", responses[0].status)
+        console.log("Data items:", data[0].items)
+        console.log("Items length:", data[0].items.length)
+        console.log("Equal strings:", equalStrings(data[0].items[0].nickname, user1))
         error(res, "Cannot find user '" + user1 + "'")
         return [null, null, 400]
     }
     if (responses[1].status !== 200 || data[1].items.length == 0 || !equalStrings(data[1].items[0].nickname, user2)) {
         console.log("Error response:", responses[1])
+        console.log("If conditions: ")
+        console.log("Status:", responses[1].status)
+        console.log("Data items:", data[1].items)
+        console.log("Items length:", data[1].items.length)
+        console.log("Equal strings:", equalStrings(data[1].items[0].nickname, user1))
         error(res, "Cannot find user '" + user2 + "'")
         return [null, null, 400]
     }
