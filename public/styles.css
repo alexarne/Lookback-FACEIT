@@ -254,7 +254,6 @@ input[type="text"] {
     vertical-align: center;
     line-height: 20px;
     font-size: 0.7em;
-    width: 100%;
     border-left: 1px solid rgb(209, 209, 209);
 }
 
@@ -293,8 +292,16 @@ input[type="text"] {
 .game > *:first-child {border-left: none;}
 
 [class*="game-"] {
-    width: 1000%;
     overflow: hidden;
+}
+
+#games-header-logo, #games-header-legacy, #games-header-link,
+.game-logo, .game-legacy, .game-link {
+    width: 10%;
+}
+#games-header-date, #games-header-team1, #games-header-team2, 
+.game-date, .game-team1, .game-team2 {
+    width: calc(70%/3);
 }
 
 .game-logo > img {

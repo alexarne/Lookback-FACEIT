@@ -111,30 +111,18 @@ function addGames(games) {
     clone.removeAttribute("id")
     clone.classList.remove("hidden")
     clone.classList.add("game")
-
-    // <div class="template hidden">
-    //     <div class="game-logo">
-    //         <img src="https://assets.faceit-cdn.net/third_party/games/2386f8e0-8aed-461f-bfb4-8634b23bfb14/assets/details/lol_EUW_flag_l_1600340149252.jpg" alt="">
-    //     </div>
-    //     <div class="game-date">b</div>
-    //     <div class="game-team1">c</div>
-    //     <div class="game-team2">d</div>
-    //     <div class="game-score">
-    //         <span>1</span>-<span>2</span>
-    //     </div>
-    //     <div class="game-legacy">
-    //         <a href="">INFO</a>
-    //     </div>
-    //     <div class="game-link">
-    //         <a href="">LINK</a>
-    //     </div>
-    // </div>
-    console.log(game)
+    
     clone.querySelector(".game-logo img").src = logo[game.game_id]
-    clone.querySelector(".game-date").innerHTML = game.started_at
+    clone.querySelector(".game-date").innerHTML = timeConverter(game.started_at)
     clone.querySelector(".game-team1").innerHTML = game.teams.faction1.nickname
     clone.querySelector(".game-team2").innerHTML = game.teams.faction2.nickname
-    clone.querySelector(".game-link a").href = game.faceit_url.replace("{lang}", "en")
+    clone.querySelector(".game-legacy button").onclick = () => {
+        console.log(game)
+    }
+    clone.querySelector(".game-link button").onclick = () => {
+        window.open(game.faceit_url.replace("{lang}", "en"), "_blank");
+    }
+    
 
     template.parentNode.appendChild(clone)
     setTimeout(() => {
@@ -191,3 +179,14 @@ function requestParams(type, body) {
         body: JSON.stringify(body),
     }
 }
+
+// Credit: https://stackoverflow.com/a/6078873
+function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var time = date + ' ' + month + ' ' + year;
+    return time;
+  }
