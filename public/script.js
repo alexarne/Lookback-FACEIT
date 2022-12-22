@@ -28,7 +28,6 @@ const logo = {
 
 const GAMES_PER_REQUEST = 200
 let current_request
-let game_counter = 0
 
 // Called when searching new players
 async function displayMutualGames() {
@@ -52,7 +51,6 @@ async function displayMutualGames() {
     const game = document.getElementById("input-game-dropdown")
     const button = document.getElementById("input-submit")
     const status = document.getElementById("input-status")
-    game_counter = 0
 
     button.disabled = true
     status.innerHTML = "Loading..."
@@ -61,7 +59,7 @@ async function displayMutualGames() {
         user2: field2.value,
         count: GAMES_PER_REQUEST,
         game: game.value,
-        offset: 0
+        last_time: Math.floor(Date.now()/1000)
     }
     const [status_code, response] = await getMutualGames(current_request)
     // Maximum value for count is somewhere between 38,000 and 40,000. Beyond that is rate limited
@@ -85,13 +83,14 @@ async function displayMutualGames() {
         document.getElementById("players-playedTogether-suffix").innerHTML = "game" + (count == 1 ? "" : "s")
         document.getElementById("games").hidden = false
         document.getElementById("games-moreButton").disabled = response.checked_all
+        document.getElementById("games-checked-last").innerHTML = response.checked_all ? "" : " since " + timeConverter(response.checked_last)
         addGames(response.mutual_games)
     } else {
         status.innerHTML = response
     }
     console.log(response)
     button.disabled = false
-    current_request.offset = response.checked_games
+    current_request.last_time = response.checked_last
 }
 
 function setAvatar(element, img) {
@@ -115,13 +114,14 @@ function addGames(games) {
     clone.querySelector(".game-logo img").src = logo[game.game_id]
     clone.querySelector(".game-date").innerHTML = timeConverter(game.started_at)
     clone.querySelector(".game-team1").innerHTML = game.teams.faction1.nickname
+    clone.querySelector(".game-team1").classList.add(game.results.winner === "faction1" ? "won" : "lost")
     clone.querySelector(".game-team2").innerHTML = game.teams.faction2.nickname
-    clone.querySelector(".game-legacy button").onclick = () => {
+    clone.querySelector(".game-team2").classList.add(game.results.winner === "faction2" ? "won" : "lost")
+    clone.querySelector(".game-legacy a").onclick = () => {
         console.log(game)
+        return false
     }
-    clone.querySelector(".game-link button").onclick = () => {
-        window.open(game.faceit_url.replace("{lang}", "en"), "_blank");
-    }
+    clone.querySelector(".game-link a").href = game.faceit_url.replace("{lang}", "en")
     
 
     template.parentNode.appendChild(clone)
@@ -139,10 +139,11 @@ async function displayMoreGames() {
     const [status_code, response] = await getMutualGames(current_request)
 
     if (status_code === 200) {
-        current_request.offset = response.checked_games
+        current_request.last_time = response.checked_last
         let count = response.mutual_games.length + Number(document.getElementById("players-playedTogether-count").innerHTML)
         document.getElementById("players-playedTogether-count").innerHTML = " " + count + " "
         document.getElementById("players-playedTogether-suffix").innerHTML = "game" + (count == 1 ? "" : "s")
+        document.getElementById("games-checked-last").innerHTML = response.checked_all ? "" : " since " + timeConverter(response.checked_last)
         addGames(response.mutual_games)
         if (response.checked_all) {
             button.disabled = true

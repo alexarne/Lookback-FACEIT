@@ -20,18 +20,18 @@ app.use(express.static("public"))
  * Request body: {
  *      user1: Nickname of user1,
  *      user2: Nickname of user2,
- *      count: Amount of games to check, starting from offset, is multiple of 100,
+ *      count: Amount of games to check, starting before last_time, is multiple of 100,
  *      game: Game ID, i.e. "lol_EUW", "csgo", "lol_EUN", etc.
- *      offset: How many games to skip
+ *      last_time: The timestamp (Unix time) as higher bound of the query
  * }
  */
 app.post("/mutualGames", async (req, res) => {
     console.log("Incoming request /mutualGames:", req.body)
     const count = req.body.count
     const game = req.body.game
-    const offset = req.body.offset
+    const last_time = req.body.last_time
 
-    const [status, msg] = validInput(req.body.user1, req.body.user2, count, game, offset)
+    const [status, msg] = validInput(req.body.user1, req.body.user2, count, game, last_time)
     if (status !== 200) {
         error(res, msg)
         return
@@ -46,7 +46,7 @@ app.post("/mutualGames", async (req, res) => {
     // Get recent {count} matches for each user
     const queries = []
     for (let i = 0; i*100 < count; i++) {
-        queries[i] = fetch(`https://open.faceit.com/data/v4/players/${user1_id}/history?game=${game}&offset=${i*100+offset}&limit=100`)
+        queries[i] = fetch(`https://open.faceit.com/data/v4/players/${user1_id}/history?game=${game}&from=0&to=${last_time}&offset=${i*100}&limit=100`)
     }
     const responses = await Promise.all(queries)
     const data = await Promise.all(responses.map(function(r) {
@@ -60,13 +60,20 @@ app.post("/mutualGames", async (req, res) => {
     const mutual_matches = []
     let checked_all = false
     let last_game
+    // console.log("--------- NEW")
     for (let i = 0; i*100 < count; i++) {
+        // console.log("response " + i + ":", responses[i])
+        // console.log("status:", responses[i].status)
         if (responses[i].status === 200) {
             // Add mutual games
+            // console.log(i + " items: " + data[i].items)
             data[i].items.forEach(match => {
-                if (match.playing_players.includes(user2_id)) {
-                    mutual_matches.push(match)
+                if (match.max_players === match.teams_size*2) { // Skip "bye" matches
+                    if (match.playing_players.includes(user2_id)) {
+                        mutual_matches.push(match)
+                    }
                 }
+                // console.log(last_game, match.started_at)
                 last_game = match.started_at
             })
             // If not full of games, we've reached the end
@@ -76,22 +83,22 @@ app.post("/mutualGames", async (req, res) => {
             }
         }
     }
+    // console.log(last_game)
     
     res.json({
         user1: user1_profile,
         user2: user2_profile,
         mutual_games: mutual_matches,
-        checked_games: offset + count,
         checked_all: checked_all,
         checked_last: last_game,
     })
 })
 
-function validInput(user1, user2, count, game, offset) {
+function validInput(user1, user2, count, game, last_time) {
     if (typeof user1 !== "string" || typeof user2 !== "string" 
         || typeof count !== "number" || typeof game !== "string"
         || count % 100 != 0 || count <= 0
-        || offset < 0 || (offset != 0 && offset % count != 0)) {
+        || last_time < 0) {
         return [400, "Incorrect body"]
     }
     if (equalStrings(user1, user2)) return [400, "Names can't be same"]

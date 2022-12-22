@@ -246,6 +246,7 @@ input[type="text"] {
     border-image: radial-gradient(rgb(150, 150, 150), var(--color-foreground)) 1;
     transform: translateY(100%);
     transition: transform 1s;
+    overflow: hidden;
 }
 
 #games-header.show { transform: translateY(0); }
@@ -293,6 +294,8 @@ input[type="text"] {
 
 [class*="game-"] {
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 #games-header-logo, #games-header-legacy, #games-header-link,
@@ -302,6 +305,13 @@ input[type="text"] {
 #games-header-date, #games-header-team1, #games-header-team2, 
 .game-date, .game-team1, .game-team2 {
     width: calc(70%/3);
+}
+
+.game-team1.won, .game-team2.won {
+    background: linear-gradient(rgb(134, 238, 134), rgb(20, 161, 20));
+}
+.game-team1.lost, .game-team2.lost {
+    background: linear-gradient(rgb(228, 100, 100), rgb(150, 35, 35));
 }
 
 .game-logo > img {
