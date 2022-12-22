@@ -60,20 +60,15 @@ app.post("/mutualGames", async (req, res) => {
     const mutual_matches = []
     let checked_all = false
     let last_game
-    // console.log("--------- NEW")
     for (let i = 0; i*100 < count; i++) {
-        // console.log("response " + i + ":", responses[i])
-        // console.log("status:", responses[i].status)
         if (responses[i].status === 200) {
             // Add mutual games
-            // console.log(i + " items: " + data[i].items)
             data[i].items.forEach(match => {
                 if (match.max_players === match.teams_size*2) { // Skip "bye" matches
                     if (match.playing_players.includes(user2_id)) {
                         mutual_matches.push(match)
                     }
                 }
-                // console.log(last_game, match.started_at)
                 last_game = match.started_at
             })
             // If not full of games, we've reached the end
@@ -83,7 +78,6 @@ app.post("/mutualGames", async (req, res) => {
             }
         }
     }
-    // console.log(last_game)
     
     res.json({
         user1: user1_profile,
