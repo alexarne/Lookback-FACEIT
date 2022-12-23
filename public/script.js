@@ -31,11 +31,12 @@ let current_request
 
 // Called when searching new players
 async function displayMutualGames() {
+    document.getElementById("players-div").hidden = false
+    document.getElementById("games").hidden = false
     document.getElementById("player1").classList.remove("show")
     document.getElementById("player2").classList.remove("show")
     document.getElementById("games-header").classList.remove("show")
-    document.getElementById("players-div").hidden = false
-    document.getElementById("games").hidden = false
+    document.getElementById("players-playedTogether-div").classList.remove("show")
 
     // Remove all games from the list except for the template
     const list = document.getElementById("games-list")

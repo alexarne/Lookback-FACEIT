@@ -216,11 +216,15 @@ input[type="text"] {
 
 #players-playedTogether-div {
     transform: translateY(-100%);
+    opacity: 0;
     display: inline-block;
-    transition: transform 2s;
+    transition: transform 2s, opacity 2s;
 }
 
-#players-playedTogether-div.show { transform: translateY(0); }
+#players-playedTogether-div.show { 
+    transform: translateY(0);
+    opacity: 1;
+}
 
 #players-playedTogether-count {
     /* color: var(--color-accent); */
