@@ -79,8 +79,10 @@ async function displayMutualGames() {
         document.getElementById("games-header").classList.add("show")
 
         const count = response.mutual_games.length
-        document.getElementById("players-playedTogether-count").innerHTML = " " + count + " "
+        document.getElementById("players-playedTogether-count").innerHTML = count
         document.getElementById("players-playedTogether-suffix").innerHTML = "game" + (count == 1 ? "" : "s")
+        document.getElementById("players-playedTogether-div").classList.add("show")
+
         document.getElementById("games").hidden = false
         document.getElementById("games-moreButton").disabled = response.checked_all
         document.getElementById("games-checked-last").innerHTML = response.checked_all ? "" : " since " + timeConverter(response.checked_last)

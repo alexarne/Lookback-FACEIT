@@ -211,10 +211,20 @@ input[type="text"] {
     margin-top: 10px;
     text-align: center;
     color: var(--color-foreground);
+    overflow: hidden;
 }
+
+#players-playedTogether-div {
+    transform: translateY(-100%);
+    display: inline-block;
+    transition: transform 2s;
+}
+
+#players-playedTogether-div.show { transform: translateY(0); }
 
 #players-playedTogether-count {
     /* color: var(--color-accent); */
+    margin: 0.25em;
     font-weight: 700;
     font-size: 1.3em;
 }
@@ -296,6 +306,9 @@ input[type="text"] {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+.game-legacy a {
+    cursor: pointer;
 }
 
 #games-header-logo, #games-header-legacy, #games-header-link,
