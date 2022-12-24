@@ -66,7 +66,14 @@ app.post("/mutualGames", async (req, res) => {
             data[i].items.forEach(match => {
                 if (match.max_players === match.teams_size*2) { // Skip "bye" matches
                     if (match.playing_players.includes(user2_id)) {
-                        mutual_matches.push(match)
+                        let team1 = match.teams.faction1.players.map(p => p.player_id)
+                        let team2 = match.teams.faction2.players.map(p => p.player_id)
+                        let same_team = team1.includes(user1_id) && team1.includes(user2_id)
+                            || team2.includes(user1_id) && team2.includes(user2_id)
+                        mutual_matches.push({
+                            same_team: same_team,
+                            match: match
+                        })
                     }
                 }
                 last_game = match.started_at

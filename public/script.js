@@ -107,14 +107,16 @@ function setAvatar(element, img) {
 function addGames(games) {
     if (games.length <= 0) return
     
-    const game = games.shift()
+    const game_info = games.shift()
+    const game = game_info.match
+    console.log(game_info)
     const template = document.querySelector(".template")
     let clone = template.cloneNode(true)
     clone.removeAttribute("id")
     clone.classList.remove("hidden")
     clone.classList.add("game")
     
-    clone.querySelector(".game-logo img").src = logo[game.game_id]
+    clone.querySelector(".game-logo img").src = `assets/${game_info.same_team ? "coop" : "vs"}.svg`
     clone.querySelector(".game-date").innerHTML = timeConverter(game.started_at)
     clone.querySelector(".game-team1").innerHTML = game.teams.faction1.nickname
     clone.querySelector(".game-team1").classList.add(game.results.winner === "faction1" ? "won" : "lost")
