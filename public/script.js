@@ -36,6 +36,7 @@ async function displayMutualGames() {
     document.getElementById("player1").classList.remove("show")
     document.getElementById("player2").classList.remove("show")
     document.getElementById("games-header").classList.remove("show")
+    document.getElementById("games-footer").classList.remove("show")
     document.getElementById("players-playedTogether-div").classList.remove("show")
 
     // Remove all games from the list except for the template
@@ -78,6 +79,7 @@ async function displayMutualGames() {
         document.getElementById("player1").classList.add("show")
         document.getElementById("player2").classList.add("show")
         document.getElementById("games-header").classList.add("show")
+        document.getElementById("games-footer").classList.add("show")
 
         const count = response.mutual_games.length
         document.getElementById("players-playedTogether-count").innerHTML = count
@@ -117,6 +119,7 @@ function addGames(games) {
     clone.classList.add("game")
     
     clone.querySelector(".game-logo img").src = `assets/${game_info.same_team ? "coop" : "vs"}.svg`
+    clone.querySelector(".game-logo").classList.add(game_info.same_team ? "coop" : "vs")
     clone.querySelector(".game-date").innerHTML = timeConverter(game.started_at)
     clone.querySelector(".game-team1").innerHTML = game.teams.faction1.nickname
     clone.querySelector(".game-team1").classList.add(game.results.winner === "faction1" ? "won" : "lost")
@@ -132,8 +135,8 @@ function addGames(games) {
     template.parentNode.appendChild(clone)
     setTimeout(() => {
         clone.classList.add("show")
-        addGames(games)
     }, 10);
+    addGames(games)
 }
 
 // Called when fetching more games from previously searched players
