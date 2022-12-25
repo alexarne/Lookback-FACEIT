@@ -42,7 +42,7 @@ async function displayMutualGames() {
     // Remove all games from the list except for the template
     const list = document.getElementById("games-list")
     document.querySelectorAll(".game").forEach((node) => {
-        list.removeChild(node)
+        node.classList.remove("show")
     })
 
     const field1 = document.getElementById("input-user1-text")
@@ -67,6 +67,10 @@ async function displayMutualGames() {
     // Maximum value for count is somewhere between 38,000 and 40,000. Beyond that is rate limited
 
     if (status_code === 200) {
+        document.querySelectorAll(".game").forEach((node) => {
+            list.removeChild(node)
+        })
+
         status.innerHTML = ""
         setAvatar(document.getElementById("player1-img"), response.user1.avatar)
         setAvatar(document.getElementById("player2-img"), response.user2.avatar)
@@ -149,7 +153,7 @@ async function displayMoreGames() {
     if (status_code === 200) {
         current_request.last_time = response.checked_last
         let count = response.mutual_games.length + Number(document.getElementById("players-playedTogether-count").innerHTML)
-        document.getElementById("players-playedTogether-count").innerHTML = " " + count + " "
+        document.getElementById("players-playedTogether-count").innerHTML = count
         document.getElementById("players-playedTogether-suffix").innerHTML = "game" + (count == 1 ? "" : "s")
         document.getElementById("games-checked-last").innerHTML = response.checked_all ? "" : " since " + timeConverter(response.checked_last)
         addGames(response.mutual_games)

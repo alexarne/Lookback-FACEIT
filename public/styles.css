@@ -22,7 +22,7 @@ body {
     padding: 0;
     margin: 100px 0;
     font-size: 16px;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 
@@ -126,6 +126,8 @@ input[type="text"] {
 #players-div {
     margin-top: 50px;
     margin-bottom: 30px;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 #players {
@@ -259,11 +261,15 @@ input[type="text"] {
     border-bottom: 1px solid;
     border-image: radial-gradient(rgb(150, 150, 150), var(--color-foreground)) 1;
     transform: translateY(100%);
-    transition: transform 1s;
+    opacity: 0;
+    transition: transform 1s, opacity 1s;
     overflow: hidden;
 }
 
-#games-header.show { transform: translateY(0); }
+#games-header.show { 
+    transform: translateY(0); 
+    opacity: 1;
+}
 
 #games-header > * {
     vertical-align: center;
@@ -286,10 +292,14 @@ input[type="text"] {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     transform: translateY(-100%);
-    transition: transform 1s;
+    opacity: 0;
+    transition: transform 1s, opacity 1s;
 }
 
-#games-footer.show { transform: translateY(0); }
+#games-footer.show { 
+    transform: translateY(0); 
+    opacity: 1;
+}
 
 #games-checked {
     font-size: 0.7em;
