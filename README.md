@@ -5,9 +5,13 @@ Find FACEIT matches where you played with a specific player, using FACEIT's API
 
 
 
-## Instruction
+## Instructions
 
 Type 2 usernames and click "Search" to view the 2 user's most recent mutual matches. At the bottom, click "Load More" to view older mutual matches, if there are any.
+
+## Use Case
+
+FACEIT is a competitive esports platform which offers third-party matchmaking services for a multitude of games (such as Counter-Strike: Global Offensive and League of Legends), where the matches are stored in FACEIT's own databases. Those matches can be viewed as part of a match history, but that match history has limited functionality in terms of searching and filtering matches, making it difficult to find specific matches. One common problem is when users want to see the matches in which they played with another specific user. This functionality does currently not exist in third-party applications, even though FACEIT's own API offers the tools for such functionality.
 
 ## Structure
 
