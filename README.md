@@ -37,5 +37,5 @@ Furthermore, requesting a user's match history can only be done for a maximum am
 
 ## Endpoints
 
-The server is not indended for public use, but is open nonetheless. The server only has 1 endpoint, `POST /mutualGames`, which requires the following body:
+The server's API is not indended for public use, but is open nonetheless. The server only has 1 endpoint, `POST /mutualGames`, which requires the following body:
 
