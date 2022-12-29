@@ -25,7 +25,7 @@ The server's endpoint is used both when searching for brand new users, and when 
 
 Furthermore, requesting a user's match history can only be done for a maximum amount of 100 games per request and we have no way of knowing if there will be more games after those 100 games until we look at the response. In an effort to prioritize speed, we issue the requests in parallel while limiting the amount of requests in order to reduce unnecessary checks. It is then up to the user to decide whether or not to check more games, since the first games may already have been enough.
 
-Alternatively, we could issue the requests serially, continually checking if there may be more games after the current response, which would ensure all games are checked, but it would significantly reduce speed. Most users are also likely not concerned with checking all games.
+Alternatively, we could issue the requests serially, continually checking if there may be more games after the current response, which would ensure all games are checked in one go, but that would be significantly slower. Most users are also likely not concerned with checking all games.
 
 ## Problems Encountered
 
