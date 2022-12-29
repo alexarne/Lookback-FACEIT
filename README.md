@@ -23,7 +23,9 @@ As a result, a total of 4 API requests are made to FACEIT's API, per search. 2 r
 
 The server's endpoint is used both when searching for brand new users, and when loading more games from 2 users. In either case we spend API requests on getting the User IDs, which may seem wasteful if we already got them from a previous search. However, we should always verify the input, which includes making a request for a username or User ID, before we can use it. We would otherwise have to assume that all input is valid, which would lead to unwanted behaviour. It is also more efficient to reuse the existing code, since all that differs is the amount of games to skip (an offset).
 
-Furthermore, requesting a user's match history can only be done for a maximum amount of 100 games per request and we have no way of knowing if there will be more games after those 100 games until we look at the response. In an effort to prioritize speed, we issue the requests in parallel while limiting the amount of requests in order to reduce unnecessary checks.
+Furthermore, requesting a user's match history can only be done for a maximum amount of 100 games per request and we have no way of knowing if there will be more games after those 100 games until we look at the response. In an effort to prioritize speed, we issue the requests in parallel while limiting the amount of requests in order to reduce unnecessary checks. It is then up to the user to decide whether or not to check more games, since the first games may already have been enough.
+
+Alternatively, we could issue the requests serially, continually checking if there may be more games after the current response, which would ensure all games are checked, but it would significantly reduce speed. Most users are also likely not concerned with checking all games.
 
 ## Problems Encountered
 
