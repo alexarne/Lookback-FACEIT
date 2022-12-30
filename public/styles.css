@@ -340,11 +340,11 @@ input[type="text"] {
 
 #games-header-logo, #games-header-legacy, #games-header-link,
 .game-logo, .game-legacy, .game-link {
-    width: 10%;
+    width: 100%;
 }
 #games-header-date, #games-header-team1, #games-header-team2, 
 .game-date, .game-team1, .game-team2 {
-    width: calc(70%/3);
+    width: calc(700%/3);
 }
 
 .game-team1.won, .game-team2.won {
@@ -365,4 +365,18 @@ input[type="text"] {
 .game-logo > img {
     height: 20px;
     margin: 5px;
+}
+
+@media (max-width: 600px) and (min-width: 500px) {
+    .game-date, .game-legacy,
+    #games-header-date, #games-header-legacy {
+        display: none;
+    }
+}
+
+@media (max-width: 500px) {
+    .game-team1, .game-team2, .game-legacy,
+    #games-header-team1, #games-header-team2, #games-header-legacy {
+        display: none;
+    }
 }
