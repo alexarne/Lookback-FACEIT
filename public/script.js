@@ -1,4 +1,3 @@
-const URL = window.location.href.slice(0, -1)   // Remove last '/'
 
 // Add "submit" on pressing ender
 document.querySelectorAll("[data-submit-target]").forEach(field => {
@@ -172,7 +171,7 @@ async function displayMoreGames() {
 
 async function getMutualGames(body) {
     let caught = false
-    const response = await fetch(URL + "/mutualGames", 
+    const response = await fetch("/mutualGames", 
         requestParams("POST", body)
     ).catch(e => {
         console.log("Failed fetch, error:", e)

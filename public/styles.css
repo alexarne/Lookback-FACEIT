@@ -32,7 +32,7 @@ img {
 
 #input {
     /* border: 1px solid white; */
-    box-shadow: 0 0 50px var(--color-background-secondary);
+    /* box-shadow: 0 0 50px var(--color-background-secondary); */
     border-radius: 2px;
     background-color: var(--color-foreground);
     margin: 0 auto 0 auto;

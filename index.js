@@ -9,12 +9,24 @@ const API_KEY = process.env.API_KEY
 
 const app = express()
 app.use(express.json())
+app.use(express.static("public"))
 
 app.listen(PORT, () => {
     console.log("Starting server at port " + PORT)
 })
-app.use(express.static("public"))
 
+app.use("/viewer-home", express.static("viewer-home"))
+app.use("/viewer-match", express.static("viewer-match"))
+app.set('view engine', 'ejs');
+
+app.get("/viewer", (req, res) => {
+    res.render("home")
+})
+app.get("/viewer/:matchId", (req, res) => {
+    res.render("match", {
+        matchId: req.params.matchId
+    })
+})
 
 /**
  * Request body: {
