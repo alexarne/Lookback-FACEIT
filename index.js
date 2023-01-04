@@ -107,8 +107,26 @@ app.post("/mutualGames", async (req, res) => {
     })
 })
 
-app.post("/getMatchInfo", (req, res) => {
+app.post("/getMatchInfo", async (req, res) => {
+    console.log("Incoming request /getMatchInfo:", req.body)
+    const response = await fetch("https://open.faceit.com/data/v4/matches/" + req.body.matchId)
+    if (response.status !== 200) {
+        error(res, response.statusText)
+        return
+    }
+    const data = await response.json()
+    res.json(data)
+})
 
+app.post("/getMatchStats", async (req, res) => {
+    console.log("Incoming request /getMatchStats:", req.body)
+    const response = await fetch("https://open.faceit.com/data/v4/matches/" + req.body.matchId + "/stats")
+    if (response.status !== 200) {
+        error(res, response.statusText)
+        return
+    }
+    const data = await response.json()
+    res.json(data)
 })
 
 function validInput(user1, user2, count, game, last_time) {

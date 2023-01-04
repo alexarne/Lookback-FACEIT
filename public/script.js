@@ -128,10 +128,7 @@ function addGames(games) {
     clone.querySelector(".game-team1").classList.add(game.results.winner === "faction1" ? "won" : "lost")
     clone.querySelector(".game-team2").innerHTML = game.teams.faction2.nickname
     clone.querySelector(".game-team2").classList.add(game.results.winner === "faction2" ? "won" : "lost")
-    clone.querySelector(".game-legacy a").onclick = () => {
-        console.log(game)
-        return false
-    }
+    clone.querySelector(".game-legacy a").href = "/viewer/" + game.match_id
     clone.querySelector(".game-link a").href = game.faceit_url.replace("{lang}", "en")
     
 
