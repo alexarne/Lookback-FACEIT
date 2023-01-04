@@ -107,6 +107,10 @@ app.post("/mutualGames", async (req, res) => {
     })
 })
 
+app.post("/getMatchInfo", (req, res) => {
+
+})
+
 function validInput(user1, user2, count, game, last_time) {
     if (typeof user1 !== "string" || typeof user2 !== "string" 
         || typeof count !== "number" || typeof game !== "string"
