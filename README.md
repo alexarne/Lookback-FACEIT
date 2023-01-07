@@ -39,5 +39,27 @@ Alternatively, we could issue the requests serially, continually checking if the
 
 ## Endpoints
 
-The server's API is not indended for public use, but is open nonetheless. The server only has 1 endpoint, `POST /mutualGames`, which requires the following body:
+The server's API is not indended for public use, but is open nonetheless. The server only has 3 endpoints, 1 meant for the lookback functionality itself, and 2 for the legacy viewer:
+
+*   `POST /mutualGames`
+    Requires the following body:
+    ```
+    {
+    
+    }
+    ```
+
+*   `POST /getMatchInfo`
+    Requires the following body:
+    ```
+    {
+    
+    }
+
+*   `POST /getMatchStats`
+    Requires the following body:
+    ```
+    {
+    
+    }
 
