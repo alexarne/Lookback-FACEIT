@@ -1,5 +1,5 @@
 # Lookback-FACEIT
-Find FACEIT matches where you played with a specific player, using FACEIT's API
+Find FACEIT matches where you played with a specific player, using FACEIT's API. The application also features an alternative match viewer for looking at match data that is otherwise too old to access via FACEIT's official website, yet still exist on their databases. 
 
 ## Website
 
@@ -19,9 +19,11 @@ The user input is in the form of 2 usernames, everything else is either automati
 
 As a result, a total of 4 API requests are made to FACEIT's API, per search. 2 requests are for translating the usernames and 2 additional requests are for looking at User 1's most recent 100 matches, for a total of 200 matches. This is not a problem since FACEIT's API is rate limited at 10,000 requests per hour, which means 2,500 lookbacks per hour.
 
+Additionally, the legacy match viewer exists on [/viewer](https://lookback-faceit.cyclic.app/viewer), where you can supply your own Match ID and be redirected to [/viewer/:matchId](https://lookback-faceit.cyclic.app/viewer/1-8a09ccdb-cbc1-43d1-a14c-60e010ad0397) for viewing the specific match data. The purpose is only to look at the raw JSON data so it makes 2 requests, 1 for the match info (configuration, players, etc.) and 1 for the match stats (player results and scores).
+
 ## Design
 
-The server's endpoint is used both when searching for brand new users, and when loading more games from 2 users. In either case we spend API requests on getting the User IDs, which may seem wasteful if we already got them from a previous search. However, we should always verify the input, which includes making a request for a username or User ID, before we can use it. We would otherwise have to assume that all input is valid, which would lead to unwanted behaviour. It is also more efficient to reuse the existing code, since all that differs is the amount of games to skip (an offset).
+The server's main endpoint is used both when searching for brand new users, and when loading more games from 2 users. In either case we spend API requests on getting the User IDs, which may seem wasteful if we already got them from a previous search. However, we should always verify the input, which includes making a request for a username or User ID, before we can use it. We would otherwise have to assume that all input is valid, which would lead to unwanted behaviour. It is also more efficient to reuse the existing code, since all that differs is the amount of games to skip (an offset).
 
 Furthermore, requesting a user's match history can only be done for a maximum amount of 100 games per request and we have no way of knowing if there will be more games after those 100 games until we look at the response. In an effort to prioritize speed, we issue the requests in parallel while limiting the amount of requests in order to reduce unnecessary checks. It is then up to the user to decide whether or not to check more games, since the first games may already have been enough.
 
