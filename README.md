@@ -47,7 +47,11 @@ The server's API is not indended for public use, but is open nonetheless. The se
     
     ```
     {
-    
+        user1,          // String - Nickname of user1,
+        user2,          // String - Nickname of user2,
+        count,          // Integer - Amount of games to check, starting before last_time, is multiple of 100,
+        game,           // String - Game ID, e.g. "lol_EUW", "csgo", "lol_EUN", etc.
+        last_time,      // Integer - The timestamp (Unix time) as higher bound of the query
     }
     ```
 
