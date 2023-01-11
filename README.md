@@ -59,7 +59,7 @@ The server's API is not indended for public use, but is open nonetheless. The se
     
     ```
     {
-    
+        matchId         // The FACEIT Match ID
     }
     ```
 
@@ -67,7 +67,7 @@ The server's API is not indended for public use, but is open nonetheless. The se
     
     ```
     {
-    
+        matchId         // The FACEIT Match ID
     }
     ```
 
