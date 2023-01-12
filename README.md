@@ -33,11 +33,11 @@ Alternatively, we could issue the requests serially, continually checking if the
 
 * **Halve amount of requests**
 
-    Only check user 1s games, halve amount of requests
+    An initial approach to checking for mutual games was to request X amount of games from user 1, X amount of games from user 2, and iterate through them to see if there was any overlapping games. However, a more efficient approache was obviously to just request X amount of games from one of the users, and check if the other user's ID appears in any of them.
 
 * **Count-based offset vs time-based offset**
 
-    Using offset field gave errors past 1000 in value, changed to time based offset
+    The FACEIT API request for fetching a user's match history uses 2 types of offsets to filter which games to return: count-based and time-based. The count-based offset uses an integer Y and skips the Y most recent games in the users match history, and then returns the desired amount of most recent games. The time-based offset is a unix timestamp where an arbitrary amount of the most recent games are still returned, but it only considers games which started before the timestamp. Initially, I used the count-based offset for loading more games, but it gave only errors if the offset was set to something greater than 1,000. As a result, I switched over to the slightly less convenient time-based offset when loading more games, using the timestamp of the starting time for the last fetched game. However, I still use the count-based offset when dealing with requests issued in parallel, since it is impossible to know when the last game started before reading the response. This behaviour is undocumented in the official documentation.
 
 ## Endpoints
 
