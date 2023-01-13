@@ -9,7 +9,7 @@ https://lookback-faceit.cyclic.app/
 
 Type 2 usernames and click "Search" to view the 2 user's most recent mutual matches. At the bottom, click "Load More" to view older mutual matches, if there are any.
 
-The usernames are not case sensitive but if two or more users exist with the same letters, it will prioritize a true match if it exists, orsettle for the first matching user if a true match does not exist.
+The usernames are not case sensitive but if two or more users exist with the same letters, it will prioritize a true match if it exists, or settle for the first matching user if a true match does not exist.
 
 ## Use Case
 
