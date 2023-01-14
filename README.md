@@ -73,3 +73,4 @@ The server's API is not indended for public use, but is open nonetheless. The se
     }
     ```
 
+Using these endpoints, it's very easy to exceed the request limit which would make the application unusable for 1 hour, or potentially worse. Also, the endpoints verify the incoming request body to an extent, but may not always guarantee correct or functional behaviour for all sets of incorrect request data.
